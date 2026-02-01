@@ -1,5 +1,6 @@
 package com.aczg.todolist;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -7,6 +8,13 @@ import java.util.stream.Collectors;
 
 public class GerenciadorTarefas {
     private List<Tarefa> tarefas = new ArrayList<>();
+
+    public Tarefa getTarefa(int id) {
+        if (id >= 0 && id < tarefas.size()) {
+            return tarefas.get(id);
+        }
+        return null;
+    }
 
     // CREATE
     public void adicionarTarefa(Tarefa t) {
@@ -24,6 +32,24 @@ public class GerenciadorTarefas {
         }
         for (int i = 0; i < tarefas.size(); i++) {
             System.out.println("ID: " + i + " - " + tarefas.get(i));
+        }
+    }
+
+    // UPDATE
+    public void editarTarefa(int id, String novoNome, String novaDesc, LocalDate novaData, int novaPrioridade, String novaCat) {
+        if (id >= 0 && id < tarefas.size()) {
+            Tarefa t = tarefas.get(id);
+            t.setNome(novoNome);
+            t.setDescricao(novaDesc);
+            t.setDataTermino(novaData);
+            t.setPrioridade(novaPrioridade);
+            t.setCategoria(novaCat);
+
+            Collections.sort(tarefas);
+
+            System.out.println("Tarefa atualizada e lista reordenada com sucesso!");
+        } else {
+            System.out.println("ID inválido.");
         }
     }
 
