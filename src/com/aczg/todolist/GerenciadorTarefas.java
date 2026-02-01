@@ -21,7 +21,7 @@ public class GerenciadorTarefas {
         tarefas.add(t);
 
         Collections.sort(tarefas);
-        System.out.println("com.aczg.todolist.Tarefa adicionada e lista reordenada por prioridade!");
+        System.out.println("Tarefa adicionada e lista reordenada por prioridade!");
     }
 
     // READ (Listar Todas)
@@ -57,7 +57,7 @@ public class GerenciadorTarefas {
     public void deletarTarefa(int indice) {
         if (indice >= 0 && indice < tarefas.size()) {
             tarefas.remove(indice);
-            System.out.println("com.aczg.todolist.Tarefa removida com sucesso.");
+            System.out.println("Tarefa removida com sucesso.");
         } else {
             System.out.println("Índice inválido.");
         }
@@ -73,7 +73,7 @@ public class GerenciadorTarefas {
         else filtradas.forEach(System.out::println);
     }
 
-    // Listar por com.aczg.todolist.Status
+    // Listar por Status
     public void listarPorStatus(Status status) {
         tarefas.stream()
                 .filter(t -> t.getStatus() == status)
@@ -98,14 +98,42 @@ public class GerenciadorTarefas {
         }
     }
 
+    // Filtrar por data
+    public void listarPorData(LocalDate data) {
+        System.out.println("\n--- Tarefas para a data: " + data + " ---");
+        boolean encontrou = false;
+
+        for (int i = 0; i < tarefas.size(); i++) {
+            Tarefa t = tarefas.get(i);
+            if (t.getDataTermino().equals(data)) {
+                System.out.println("ID: " + i + " - " + t);
+                encontrou = true;
+            }
+        }
+        if (!encontrou) System.out.println("Nenhuma tarefa encontrada para esta data.");
+    }
+
     // Atualizar Status
     public void atualizarStatus(int id, Status novoStatus) {
         if (id >= 0 && id < tarefas.size()) {
             Tarefa tarefa = tarefas.get(id);
             tarefa.setStatus(novoStatus);
-            System.out.println("com.aczg.todolist.Status da tarefa '" + tarefa.getNome() + "' atualizado para: " + novoStatus);
+            System.out.println("Status da tarefa '" + tarefa.getNome() + "' atualizado para: " + novoStatus);
         } else {
             System.out.println("Erro: Índice da tarefa não encontrado!");
         }
+    }
+
+    // ESTATÍSTICAS
+    public void mostrarEstatisticas() {
+        long todo = tarefas.stream().filter(t -> t.getStatus() == Status.TODO).count();
+        long doing = tarefas.stream().filter(t -> t.getStatus() == Status.DOING).count();
+        long done = tarefas.stream().filter(t -> t.getStatus() == Status.DONE).count();
+
+        System.out.println("\n--- Estatísticas das Tarefas ---");
+        System.out.println("A Fazer (TODO): " + todo);
+        System.out.println("Em Andamento (DOING): " + doing);
+        System.out.println("Concluídas (DONE): " + done);
+        System.out.println("Total: " + tarefas.size());
     }
 }
