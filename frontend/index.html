@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Tarefas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Gerenciador de Tarefas</h1>
+    </header>
+                                                    
+    <main class="container">
+        <section class="painel-formulario" aria-labelledby="titulo-form">
+            <h2 id="titulo-form">Nova Tarefa</h2>
+            <form id="form-tarefa">
+                <input type="hidden" id="tarefa-id">
+
+                <div class="grupo-input">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" required>
+                </div>
+
+                <div class="grupo-input">
+                    <label for="descricao">Descrição:</label>
+                    <textarea id="descricao" rows="3" required></textarea>
+                </div>
+
+                <div class="grupo-linha">
+                    <div class="grupo-input">
+                        <label for="data-termino">Data de Término:</label>
+                        <input type="date" id="data-termino" required>
+                    </div>
+
+                    <div class="grupo-input">
+                        <label for="prioridade">Prioridade (1-5):</label>
+                        <input type="number" id="prioridade" min="1" max="5" required>
+                    </div>
+                </div>
+
+                <div class="grupo-linha">
+                    <div class="grupo-input">
+                        <label for="categoria">Categoria:</label>
+                        <input type="text" id="categoria" required>
+                    </div>
+
+                    <div class="grupo-input">
+                        <label for="status">Status:</label>
+                        <select id="status">
+                            <option value="TODO">A Fazer (TODO)</option>
+                            <option value="DOING">Fazendo (DOING)</option>
+                            <option value="DONE">Feito (DONE)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="acoes-form">
+                    <button type="submit" id="btn-salvar" class="btn-primario">Salvar Tarefa</button>
+                    <button type="button" id="btn-cancelar" class="btn-secundario" style="display: none;">Cancelar Edição</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="painel-listagem" aria-labelledby="titulo-lista">
+            <div class="cabecalho-lista">
+                <h2 id="titulo-lista">Minhas Tarefas</h2>
+                <div class="filtro">
+                    <label for="filtro-status">Filtrar:</label>
+                    <select id="filtro-status">
+                        <option value="TODOS">Todos</option>
+                        <option value="TODO">TODO</option>
+                        <option value="DOING">DOING</option>
+                        <option value="DONE">DONE</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="container-tarefas" class="grade-tarefas">
+                </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

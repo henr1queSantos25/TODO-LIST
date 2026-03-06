@@ -16,7 +16,7 @@ public class GerenciadorTarefas {
         return null;
     }
 
-    // CREATE
+
     public void adicionarTarefa(Tarefa t) {
         tarefas.add(t);
 
@@ -24,7 +24,7 @@ public class GerenciadorTarefas {
         System.out.println("Tarefa adicionada e lista reordenada por prioridade!");
     }
 
-    // READ (Listar Todas)
+
     public void listarTodas() {
         if (tarefas.isEmpty()) {
             System.out.println("Nenhuma tarefa cadastrada.");
@@ -35,7 +35,7 @@ public class GerenciadorTarefas {
         }
     }
 
-    // UPDATE
+    
     public void editarTarefa(int id, String novoNome, String novaDesc, LocalDate novaData, int novaPrioridade, String novaCat) {
         if (id >= 0 && id < tarefas.size()) {
             Tarefa t = tarefas.get(id);
@@ -53,7 +53,7 @@ public class GerenciadorTarefas {
         }
     }
 
-    // DELETE
+    
     public void deletarTarefa(int indice) {
         if (indice >= 0 && indice < tarefas.size()) {
             tarefas.remove(indice);
@@ -63,7 +63,7 @@ public class GerenciadorTarefas {
         }
     }
 
-    // Listar por Categoria
+    
     public void listarPorCategoria(String categoria) {
         List<Tarefa> filtradas = tarefas.stream()
                 .filter(t -> t.getCategoria().equalsIgnoreCase(categoria))
@@ -73,14 +73,14 @@ public class GerenciadorTarefas {
         else filtradas.forEach(System.out::println);
     }
 
-    // Listar por Status
+    
     public void listarPorStatus(Status status) {
         tarefas.stream()
                 .filter(t -> t.getStatus() == status)
                 .forEach(System.out::println);
     }
 
-    // Listar Por Prioridade
+    
     public void listarPorPrioridade(int prioridadeAlvo) {
         System.out.println("\n--- Tarefas com Prioridade " + prioridadeAlvo + " ---");
         boolean encontrou = false;
@@ -98,7 +98,7 @@ public class GerenciadorTarefas {
         }
     }
 
-    // Filtrar por data
+    
     public void listarPorData(LocalDate data) {
         System.out.println("\n--- Tarefas para a data: " + data + " ---");
         boolean encontrou = false;
@@ -113,7 +113,7 @@ public class GerenciadorTarefas {
         if (!encontrou) System.out.println("Nenhuma tarefa encontrada para esta data.");
     }
 
-    // Atualizar Status
+    
     public void atualizarStatus(int id, Status novoStatus) {
         if (id >= 0 && id < tarefas.size()) {
             Tarefa tarefa = tarefas.get(id);
@@ -124,7 +124,7 @@ public class GerenciadorTarefas {
         }
     }
 
-    // ESTATÍSTICAS
+    
     public void mostrarEstatisticas() {
         long todo = tarefas.stream().filter(t -> t.getStatus() == Status.TODO).count();
         long doing = tarefas.stream().filter(t -> t.getStatus() == Status.DOING).count();
