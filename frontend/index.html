@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,11 +8,12 @@
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/responsive.css">
 </head>
+
 <body>
     <header>
         <h1>Gerenciador de Tarefas</h1>
     </header>
-                                                    
+
     <main class="container">
         <section class="painel-formulario" aria-labelledby="titulo-form">
             <h2 id="titulo-form">Nova Tarefa</h2>
@@ -58,7 +60,8 @@
 
                 <div class="acoes-form">
                     <button type="submit" id="btn-salvar" class="btn-primario">Salvar Tarefa</button>
-                    <button type="button" id="btn-cancelar" class="btn-secundario" style="display: none;">Cancelar Edição</button>
+                    <button type="button" id="btn-cancelar" class="btn-secundario" style="display: none;">Cancelar
+                        Edição</button>
                 </div>
             </form>
         </section>
@@ -76,12 +79,23 @@
                     </select>
                 </div>
             </div>
-            
+
+            <div id="barra-acoes-massa" class="acoes-em-massa" style="display: none;">
+                <label for="status-massa">Alterar selecionados para:</label>
+                <select id="status-massa">
+                    <option value="TODO">A Fazer (TODO)</option>
+                    <option value="DOING">Fazendo (DOING)</option>
+                    <option value="DONE">Feito (DONE)</option>
+                </select>
+                <button type="button" id="btn-aplicar-massa" class="btn-primario">Aplicar Status</button>
+            </div>
+
             <div id="container-tarefas" class="grade-tarefas">
-                </div>
+            </div>
         </section>
     </main>
 
     <script src="script.js"></script>
 </body>
+
 </html>

@@ -1,7 +1,17 @@
-let tarefas = [];
-let proximoId = 1;
+let tarefas = carregarDoLocalStorage();
+let proximoId = tarefas.length > 0 ? Math.max(...tarefas.map(t => t.id)) + 1 : 1;
+
+function salvarNoLocalStorage() {
+    localStorage.setItem('tarefas', JSON.stringify(tarefas));
+}
+
+function carregarDoLocalStorage() {
+    const dados = localStorage.getItem('tarefas');
+    return dados ? JSON.parse(dados) : [];
+}
 
 // --- SELETORES DO DOM ---
+
 const form = document.getElementById('form-tarefa');
 const inputId = document.getElementById('tarefa-id');
 const inputNome = document.getElementById('nome');
@@ -16,15 +26,21 @@ const tituloForm = document.getElementById('titulo-form');
 const containerTarefas = document.getElementById('container-tarefas');
 const filtroStatus = document.getElementById('filtro-status');
 
+const barraAcoesMassa = document.getElementById('barra-acoes-massa');
+const selectStatusMassa = document.getElementById('status-massa');
+const btnAplicarMassa = document.getElementById('btn-aplicar-massa');
+
 // --- EVENT LISTENERS ---
+
 form.addEventListener('submit', salvarTarefa);
 btnCancelar.addEventListener('click', resetarFormulario);
 filtroStatus.addEventListener('change', renderizarTarefas);
+btnAplicarMassa.addEventListener('click', aplicarStatusEmMassa);
 
 // --- FUNÇÕES DE CRUD ---
 
 function salvarTarefa(event) {
-    event.preventDefault(); // Evita o recarregamento da página
+    event.preventDefault();
 
     const idAtual = inputId.value;
     const dadosTarefa = {
@@ -49,13 +65,15 @@ function salvarTarefa(event) {
     }
 
     tarefas.sort((a, b) => a.prioridade - b.prioridade);
-
+    
+    salvarNoLocalStorage();
     resetarFormulario();
     renderizarTarefas();
 }
 
 function deletarTarefa(id) {
     tarefas = tarefas.filter(t => t.id !== id);
+    salvarNoLocalStorage();
     renderizarTarefas();
 }
 
@@ -75,8 +93,30 @@ function prepararEdicao(id) {
     btnCancelar.style.display = 'inline-block';
 }
 
-// --- FUNÇÕES DE INTERFACE (UI) ---
+// --- FUNÇÕES DE AÇÕES EM MASSA ---
 
+function verificarSelecao() {
+    const temSelecionado = document.querySelectorAll('.selecao-tarefa:checked').length > 0;
+    barraAcoesMassa.style.display = temSelecionado ? 'flex' : 'none';
+}
+
+function aplicarStatusEmMassa() {
+    const checkboxes = document.querySelectorAll('.selecao-tarefa:checked');
+    const novoStatus = selectStatusMassa.value;
+
+    checkboxes.forEach(chk => {
+        const idTarefa = parseInt(chk.value);
+        const index = tarefas.findIndex(t => t.id === idTarefa);
+        if (index !== -1) {
+            tarefas[index].status = novoStatus;
+        }
+    });
+
+    salvarNoLocalStorage(); 
+    renderizarTarefas();   
+}
+
+// --- FUNÇÕES DE INTERFACE (UI) ---
 function resetarFormulario() {
     form.reset();
     inputId.value = '';
@@ -94,6 +134,7 @@ function renderizarTarefas() {
 
     if (tarefasFiltradas.length === 0) {
         containerTarefas.innerHTML = '<p>Nenhuma tarefa encontrada.</p>';
+        verificarSelecao();
         return;
     }
 
@@ -104,10 +145,11 @@ function renderizarTarefas() {
         const dataFormatada = tarefa.dataTermino.split('-').reverse().join('/');
 
         cartao.innerHTML = `
+            <input type="checkbox" class="selecao-tarefa" value="${tarefa.id}" onchange="verificarSelecao()">
             <div class="cartao-conteudo">
                 <h3>${tarefa.nome}</h3>
                 <p>${tarefa.descricao}</p>
-                <div style="margin-top: 10px;">
+                <div class="etiqueta-grupo">
                     <span class="etiqueta">Prioridade: ${tarefa.prioridade}</span>
                     <span class="etiqueta">Data: ${dataFormatada}</span>
                     <span class="etiqueta">Cat: ${tarefa.categoria}</span>
@@ -121,4 +163,8 @@ function renderizarTarefas() {
         `;
         containerTarefas.appendChild(cartao);
     });
+
+    verificarSelecao(); 
 }
+
+renderizarTarefas();
