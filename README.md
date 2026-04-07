@@ -69,6 +69,7 @@ TODO-List/
 ## Pré-requisitos
 
 * Java JDK 8 ou superior instalado (para o CLI).
+* Gradle instalado (ou Gradle Wrapper, quando adicionado ao projeto).
 * Navegador moderno (para o frontend).
 
 ---
@@ -77,9 +78,24 @@ TODO-List/
 
 ### CLI Java
 
+#### Via Gradle (recomendado)
+Na raiz do projeto, execute:
+
+```bash
+gradle clean build
+gradle run
+```
+
+Com Gradle Wrapper (quando disponível no projeto):
+
+```bash
+./gradlew clean build
+./gradlew run
+```
+
 #### Via IDE (IntelliJ IDEA, Eclipse, VS Code)
 1.  Importe a pasta do projeto.
-2.  Localize o arquivo `src/com/aczg/todolist/Main.java`.
+2.  Localize o arquivo `src/main/java/com/aczg/todolist/Main.java`.
 3.  Execute o método `main`.
 
 #### Via Terminal
