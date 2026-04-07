@@ -133,3 +133,8 @@ Ou arraste o arquivo `index.html` para uma janela do navegador.
 * **Persistência local:** Os dados são salvos automaticamente no `localStorage` do navegador, sem necessidade de servidor ou banco de dados.
 * **Validação de Formulários:** Tratamento de erros e segurança de dados utilizando Expressões Regulares (Regex) para garantir o formato correto dos campos (como nível de prioridade restrito de 1 a 5) e regras de negócio temporais (impedindo o agendamento de tarefas para datas no passado), com feedback visual imediato para o usuário.
 * **Responsivo:** A interface se adapta a dispositivos móveis e desktops.
+
+## Desenvolvido por
+
+Henrique Oliveira dos Santos  
+[LinkedIn](https://www.linkedin.com/in/dev-henriqueo-santos/)
