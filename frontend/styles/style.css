@@ -158,6 +158,19 @@ button {
     margin-top: 5px;
 }
 
+.msg-erro {
+    color: var(--cor-perigo);
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+    font-weight: bold;
+    display: none;
+}
+
+.input-erro {
+    border-color: var(--cor-perigo) !important;
+    background-color: #fff8f8;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }

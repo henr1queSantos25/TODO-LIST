@@ -34,12 +34,12 @@
                     <div class="grupo-input">
                         <label for="data-termino">Data de Término:</label>
                         <input type="date" id="data-termino" required>
-                    </div>
+                        <span id="erro-data" class="msg-erro"></span> </div>
 
                     <div class="grupo-input">
                         <label for="prioridade">Prioridade (1-5):</label>
                         <input type="number" id="prioridade" min="1" max="5" required>
-                    </div>
+                        <span id="erro-prioridade" class="msg-erro"></span> </div>
                 </div>
 
                 <div class="grupo-linha">
@@ -95,6 +95,7 @@
         </section>
     </main>
 
+    <script src="utils/validacoes.js"></script>
     <script src="script.js"></script>
 </body>
 

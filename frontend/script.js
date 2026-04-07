@@ -30,6 +30,9 @@ const barraAcoesMassa = document.getElementById('barra-acoes-massa');
 const selectStatusMassa = document.getElementById('status-massa');
 const btnAplicarMassa = document.getElementById('btn-aplicar-massa');
 
+const msgErroData = document.getElementById('erro-data');
+const msgErroPrioridade = document.getElementById('erro-prioridade');
+
 // --- EVENT LISTENERS ---
 
 form.addEventListener('submit', salvarTarefa);
@@ -41,13 +44,35 @@ btnAplicarMassa.addEventListener('click', aplicarStatusEmMassa);
 
 function salvarTarefa(event) {
     event.preventDefault();
+    limparErros();
+
+    const valPrioridade = inputPrioridade.value;
+    const valData = inputData.value;
+    let formValido = true;
+
+    if (!isPrioridadeValida(valPrioridade)) {
+        mostrarErro(inputPrioridade, msgErroPrioridade, "A prioridade deve ser apenas um número entre 1 e 5.");
+        formValido = false;
+    }
+
+    if (!isDataFormatoValido(valData)) {
+        mostrarErro(inputData, msgErroData, "Formato de data inválido.");
+        formValido = false;
+    } else if (!isDataFuturaOuHoje(valData)) {
+        mostrarErro(inputData, msgErroData, "A data de término não pode ser anterior a hoje.");
+        formValido = false;
+    }
+
+    if (!formValido) {
+        return; 
+    }
 
     const idAtual = inputId.value;
     const dadosTarefa = {
         nome: inputNome.value,
         descricao: inputDescricao.value,
-        dataTermino: inputData.value,
-        prioridade: parseInt(inputPrioridade.value),
+        dataTermino: valData,
+        prioridade: parseInt(valPrioridade),
         categoria: inputCategoria.value,
         status: selectStatus.value
     };
@@ -66,7 +91,7 @@ function salvarTarefa(event) {
 
     tarefas.sort((a, b) => a.prioridade - b.prioridade);
     
-    salvarNoLocalStorage();
+    salvarNoLocalStorage(); 
     resetarFormulario();
     renderizarTarefas();
 }
@@ -117,11 +142,26 @@ function aplicarStatusEmMassa() {
 }
 
 // --- FUNÇÕES DE INTERFACE (UI) ---
+
 function resetarFormulario() {
     form.reset();
     inputId.value = '';
     tituloForm.textContent = "Nova Tarefa";
     btnCancelar.style.display = 'none';
+    limparErros();
+}
+
+function mostrarErro(inputElement, spanElement, mensagem) {
+    spanElement.textContent = mensagem;
+    spanElement.style.display = 'block';
+    inputElement.classList.add('input-erro');
+}
+
+function limparErros() {
+    msgErroData.style.display = 'none';
+    msgErroPrioridade.style.display = 'none';
+    inputData.classList.remove('input-erro');
+    inputPrioridade.classList.remove('input-erro');
 }
 
 function renderizarTarefas() {
