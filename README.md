@@ -36,6 +36,8 @@ TODO-List/
 ├── frontend/
 │   ├── index.html
 │   ├── script.js
+│   └── utils/
+        ├── validacoes.js
 │   └── styles/
 │       ├── style.css
 │       └── responsive.css
@@ -58,6 +60,7 @@ TODO-List/
 ### Frontend (Interface Web)
 * `index.html`: Estrutura da página com formulário de criação/edição e painel de listagem.
 * `script.js`: Lógica completa de CRUD, filtragem, seleção em massa e renderização dinâmica.
+* `utils/validacoes.js`: Módulo dedicado à validação de dados com Expressões Regulares (Regex) e regras temporais de negócio.
 * `styles/style.css`: Estilos base e variáveis de tema CSS.
 * `styles/responsive.css`: Regras de responsividade para diferentes tamanhos de tela.
 
@@ -112,4 +115,5 @@ Ou arraste o arquivo `index.html` para uma janela do navegador.
 * **Filtro por Status:** Filtra a visualização por TODO, DOING ou DONE em tempo real.
 * **Ações em massa:** Permite selecionar múltiplas tarefas via checkbox e alterar o status de todas de uma só vez.
 * **Persistência local:** Os dados são salvos automaticamente no `localStorage` do navegador, sem necessidade de servidor ou banco de dados.
+* **Validação de Formulários:** Tratamento de erros e segurança de dados utilizando Expressões Regulares (Regex) para garantir o formato correto dos campos (como nível de prioridade restrito de 1 a 5) e regras de negócio temporais (impedindo o agendamento de tarefas para datas no passado), com feedback visual imediato para o usuário.
 * **Responsivo:** A interface se adapta a dispositivos móveis e desktops.
