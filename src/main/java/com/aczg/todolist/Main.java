@@ -1,6 +1,7 @@
 package com.aczg.todolist;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
@@ -9,7 +10,9 @@ public class Main {
     public static void main(String[] args) {
         GerenciadorTarefas gerenciador = new GerenciadorTarefas();
         Scanner scanner = new Scanner(System.in);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        DateTimeFormatter formatterDataHora = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        DateTimeFormatter formatterData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         System.out.println("Bem-vindo ao Todo List!");
 
@@ -36,7 +39,7 @@ public class Main {
                 opcao = Integer.parseInt(entrada);
             } catch (NumberFormatException e) {
                 System.out.println("Erro: Por favor, digite apenas números.");
-                continue; // Volta para o início do while
+                continue;
             }
 
             if (opcao == 0) {
@@ -54,8 +57,8 @@ public class Main {
                         System.out.print("Descrição: ");
                         String desc = scanner.nextLine();
 
-                        System.out.print("Data de Término (dd/MM/yyyy): ");
-                        LocalDate data = LocalDate.parse(scanner.nextLine(), formatter);
+                        System.out.print("Data e Hora de Término (dd/MM/yyyy HH:mm): ");
+                        LocalDateTime dataHora = LocalDateTime.parse(scanner.nextLine(), formatterDataHora);
 
                         System.out.print("Prioridade (1 a 5): ");
                         int prioridade = Integer.parseInt(scanner.nextLine());
@@ -63,7 +66,21 @@ public class Main {
                         System.out.print("Categoria (ex: Trabalho, Pessoal): ");
                         String cat = scanner.nextLine();
 
-                        Tarefa novaTarefa = new Tarefa(nome, desc, data, prioridade, cat, Status.TODO);
+                        Tarefa novaTarefa = new Tarefa(nome, desc, dataHora, prioridade, cat, Status.TODO);
+
+                        System.out.print("Deseja adicionar alarmes para esta tarefa? (s/n): ");
+                        if(scanner.nextLine().equalsIgnoreCase("s")) {
+                            boolean adicionarMais = true;
+                            while(adicionarMais) {
+                                System.out.print("Avisar quantos minutos ANTES da tarefa? (ex: 60 para 1h): ");
+                                int min = Integer.parseInt(scanner.nextLine());
+                                novaTarefa.adicionarAlarme(min);
+
+                                System.out.print("Adicionar outro alarme? (s/n): ");
+                                adicionarMais = scanner.nextLine().equalsIgnoreCase("s");
+                            }
+                        }
+
                         gerenciador.adicionarTarefa(novaTarefa);
                         break;
 
@@ -93,7 +110,7 @@ public class Main {
 
                     case 6: // LISTAR POR DATA
                         System.out.print("Digite a data para filtrar (dd/MM/yyyy): ");
-                        LocalDate dataFiltro = LocalDate.parse(scanner.nextLine(), formatter);
+                        LocalDate dataFiltro = LocalDate.parse(scanner.nextLine(), formatterData);
                         gerenciador.listarPorData(dataFiltro);
                         break;
 
@@ -112,7 +129,6 @@ public class Main {
                         System.out.print("Digite o ID da tarefa para editar: ");
                         int idEdit = Integer.parseInt(scanner.nextLine());
 
-                        // Verifica se existe antes de pedir os dados
                         Tarefa tAntiga = gerenciador.getTarefa(idEdit);
 
                         if (tAntiga != null) {
@@ -125,8 +141,8 @@ public class Main {
                             System.out.print("Nova Descrição: ");
                             String nDesc = scanner.nextLine();
 
-                            System.out.print("Nova Data (dd/MM/yyyy): ");
-                            LocalDate nData = LocalDate.parse(scanner.nextLine(), formatter);
+                            System.out.print("Nova Data e Hora (dd/MM/yyyy HH:mm): ");
+                            LocalDateTime nDataHora = LocalDateTime.parse(scanner.nextLine(), formatterDataHora);
 
                             System.out.print("Nova Prioridade (1-5): ");
                             int nPrio = Integer.parseInt(scanner.nextLine());
@@ -134,7 +150,7 @@ public class Main {
                             System.out.print("Nova Categoria: ");
                             String nCat = scanner.nextLine();
 
-                            gerenciador.editarTarefa(idEdit, nNome, nDesc, nData, nPrio, nCat);
+                            gerenciador.editarTarefa(idEdit, nNome, nDesc, nDataHora, nPrio, nCat);
                         } else {
                             System.out.println("Erro: ID não encontrado.");
                         }
@@ -155,7 +171,7 @@ public class Main {
                 }
 
             } catch (DateTimeParseException e) {
-                System.out.println("Erro: Formato de data inválido! Use dd/MM/yyyy (ex: 30/12/2024)");
+                System.out.println("Erro de Formato! Se for nova tarefa/edição use 'dd/MM/yyyy HH:mm'. Se for filtro use 'dd/MM/yyyy'.");
             } catch (NumberFormatException e) {
                 System.out.println("Erro: Você digitou um texto onde deveria ser um número.");
             } catch (Exception e) {

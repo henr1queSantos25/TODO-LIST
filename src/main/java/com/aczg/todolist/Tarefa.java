@@ -1,33 +1,44 @@
 package com.aczg.todolist;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Tarefa implements Comparable<Tarefa> {
     private String nome;
     private String descricao;
-    private LocalDate dataTermino;
+    private LocalDateTime dataHoraTermino;
     private int prioridade; // 1 a 5
     private String categoria;
     private Status status;
+    private List<Alarme> alarmes;
 
-
-    public Tarefa(String nome, String descricao, LocalDate dataTermino, int prioridade, String categoria, Status status) {
+    public Tarefa(String nome, String descricao, LocalDateTime dataHoraTermino, int prioridade, String categoria, Status status) {
         this.nome = nome;
         this.descricao = descricao;
-        this.dataTermino = dataTermino;
+        this.dataHoraTermino = dataHoraTermino;
         this.prioridade = prioridade;
         this.categoria = categoria;
         this.status = status;
+        this.alarmes = new ArrayList<>();
     }
 
+    public void adicionarAlarme(int minutosAntecedencia) {
+        this.alarmes.add(new Alarme(minutosAntecedencia, this.dataHoraTermino));
+    }
 
     // Getters
+    public List<Alarme> getAlarmes() {
+        return alarmes;
+    }
+
     public String getDescricao() {
         return descricao;
     }
 
-    public LocalDate getDataTermino() {
-        return dataTermino;
+    public LocalDateTime getDataHoraTermino() {
+        return dataHoraTermino;
     }
 
     public int getPrioridade() {
@@ -46,7 +57,6 @@ public class Tarefa implements Comparable<Tarefa> {
         return nome;
     }
 
-
     // Setters
     public void setNome(String nome) {
         this.nome = nome;
@@ -56,8 +66,8 @@ public class Tarefa implements Comparable<Tarefa> {
         this.descricao = descricao;
     }
 
-    public void setDataTermino(LocalDate dataTermino) {
-        this.dataTermino = dataTermino;
+    public void setDataHoraTermino(LocalDateTime dataHoraTermino) {
+        this.dataHoraTermino = dataHoraTermino;
     }
 
     public void setPrioridade(int prioridade) {
@@ -72,15 +82,13 @@ public class Tarefa implements Comparable<Tarefa> {
         this.status = status;
     }
 
-
     @Override
     public String toString() {
-        return String.format("Prioridade: %d | [%s] %s - %s (Data: %s, Categoria: %s)",
-                prioridade, status, nome, descricao, dataTermino, categoria);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        return String.format("Prioridade: %d | [%s] %s - %s (Data/Hora: %s, Categoria: %s, Alarmes: %d)",
+                prioridade, status, nome, descricao, dataHoraTermino.format(formatter), categoria, alarmes.size());
     }
 
-
-    // Assumindo: 1 é mais urgente que 5. Se for o contrário, inverta a subtração).
     @Override
     public int compareTo(Tarefa outra) {
         return Integer.compare(this.prioridade, outra.prioridade);

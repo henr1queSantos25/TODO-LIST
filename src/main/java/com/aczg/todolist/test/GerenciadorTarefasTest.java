@@ -4,7 +4,7 @@ import com.aczg.todolist.GerenciadorTarefas;
 import com.aczg.todolist.Status;
 import com.aczg.todolist.Tarefa;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class GerenciadorTarefasTest {
 
@@ -28,8 +28,8 @@ public class GerenciadorTarefasTest {
 
         // GIVEN
         GerenciadorTarefas gerenciador = new GerenciadorTarefas();
-        LocalDate data = LocalDate.of(2026, 12, 31);
-        Tarefa novaTarefa = new Tarefa("Estudar Testes", "Aprender TDD", data, 1, "Estudos", Status.TODO);
+        LocalDateTime dataHora = LocalDateTime.of(2026, 12, 31, 15, 0); // Data e Hora
+        Tarefa novaTarefa = new Tarefa("Estudar Testes", "Aprender TDD", dataHora, 1, "Estudos", Status.TODO);
 
         // WHEN
         gerenciador.adicionarTarefa(novaTarefa);
@@ -37,7 +37,7 @@ public class GerenciadorTarefasTest {
 
         // THEN
         if (tarefaCriada != null && tarefaCriada.getNome().equals("Estudar Testes")) {
-            System.out.println("   --- Criando >> Tarefa: " + tarefaCriada.getNome() + ", Data Término: " + tarefaCriada.getDataTermino() + ", Status: " + tarefaCriada.getStatus() + " >> criada com sucesso!\n");
+            System.out.println("   --- Criando >> Tarefa: " + tarefaCriada.getNome() + ", Data Término: " + tarefaCriada.getDataHoraTermino() + ", Status: " + tarefaCriada.getStatus() + " >> criada com sucesso!\n");
         } else {
             System.out.println("   --- FALHA: A tarefa não foi criada corretamente.\n");
         }
@@ -48,7 +48,7 @@ public class GerenciadorTarefasTest {
 
         // GIVEN
         GerenciadorTarefas gerenciador = new GerenciadorTarefas();
-        Tarefa t1 = new Tarefa("Ler livro", "Ler 20 páginas", LocalDate.now(), 2, "Lazer", Status.TODO);
+        Tarefa t1 = new Tarefa("Ler livro", "Ler 20 páginas", LocalDateTime.now(), 2, "Lazer", Status.TODO);
         gerenciador.adicionarTarefa(t1);
 
         // WHEN
@@ -67,12 +67,12 @@ public class GerenciadorTarefasTest {
 
         // GIVEN
         GerenciadorTarefas gerenciador = new GerenciadorTarefas();
-        LocalDate data = LocalDate.now();
-        Tarefa tarefaOriginal = new Tarefa("Fazer compras", "Ir ao mercado", data, 3, "Casa", Status.TODO);
+        LocalDateTime dataHora = LocalDateTime.now();
+        Tarefa tarefaOriginal = new Tarefa("Fazer compras", "Ir ao mercado", dataHora, 3, "Casa", Status.TODO);
         gerenciador.adicionarTarefa(tarefaOriginal);
 
         // WHEN
-        gerenciador.editarTarefa(0, "Fazer compras do mês", "Ir ao atacadão", data, 1, "Casa");
+        gerenciador.editarTarefa(0, "Fazer compras do mês", "Ir ao atacadão", dataHora, 1, "Casa");
         Tarefa tarefaAtualizada = gerenciador.getTarefa(0);
 
         // THEN
@@ -83,20 +83,17 @@ public class GerenciadorTarefasTest {
         }
     }
 
-
     public static void testeDeletarTarefa() {
         System.out.println("-- Teste de exclusão de tarefa (DELETE):");
 
         // GIVEN
         GerenciadorTarefas gerenciador = new GerenciadorTarefas();
-        Tarefa t1 = new Tarefa("Pagar boletos", "Luz e Água", LocalDate.now(), 1, "Finanças", Status.TODO);
+        Tarefa t1 = new Tarefa("Pagar boletos", "Luz e Água", LocalDateTime.now(), 1, "Finanças", Status.TODO);
         gerenciador.adicionarTarefa(t1);
 
         // WHEN
         Tarefa tarefaAntes = gerenciador.getTarefa(0);
-
         gerenciador.deletarTarefa(0);
-
         Tarefa tarefaDepois = gerenciador.getTarefa(0);
 
         // THEN
